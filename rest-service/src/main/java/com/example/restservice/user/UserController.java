@@ -1,9 +1,7 @@
 package com.example.restservice.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +23,11 @@ public class UserController {
     @GetMapping("/users/{id}")
     public User retireveUser(@PathVariable int id){ // url의 데이터값을 뽑아와야 함 -> @PathVariable
         return service.findOne(id);
+    }
+
+    @PostMapping("/users")
+    public void createUser(@RequestBody User user){ //JSON 데이터를 @RequestBody를 이용하여 Java - User 객체로 전환하여 받아옴
+        User savedUser = service.save(user);
+        service.save(user);
     }
 }

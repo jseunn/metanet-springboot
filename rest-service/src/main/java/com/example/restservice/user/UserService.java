@@ -1,6 +1,7 @@
 package com.example.restservice.user;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,5 +30,15 @@ public class UserService {
             }
         }
         return null;
+    }
+
+    public User save(User user){
+        if(user.getId() == null){
+            user.setId(++usersCount);
+        }
+
+       users.add(user);
+
+       return user;
     }
 }
