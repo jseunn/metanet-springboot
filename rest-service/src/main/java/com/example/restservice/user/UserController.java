@@ -1,8 +1,11 @@
 package com.example.restservice.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -26,8 +29,14 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public void createUser(@RequestBody User user){ //JSON 데이터를 @RequestBody를 이용하여 Java - User 객체로 전환하여 받아옴
+    public ResponseEntity createUser(@RequestBody User user){ //JSON 데이터를 @RequestBody를 이용하여 Java - User 객체로 전환하여 받아옴
         User savedUser = service.save(user);
-        service.save(user);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(savedUser.getId())
+                                .toUri(); // 추가한 user의 URI를 만든다.
+
+        return ResponseEntity.created(location).build();
     }
 }
