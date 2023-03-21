@@ -1,5 +1,6 @@
 package com.example.restservice.exception;
 
+import com.example.restservice.user.UserNotFoundException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,20 @@ public class CustomizeResponseEntityExceptionHandler extends ResponseEntityExcep
     // 모든 예외처리를 처리해 주는 메서드
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllException(Exception ex,
-                                                           WebRequest request){
+                                                           WebRequest request) {
 
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public final ResponseEntity<Object> handleUserNotFoundException(Exception ex,
+                                                                    WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 }
