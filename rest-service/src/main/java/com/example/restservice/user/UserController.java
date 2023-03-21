@@ -1,7 +1,7 @@
 package com.example.restservice.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -11,8 +11,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-//import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-//import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class UserController {
@@ -29,17 +29,17 @@ public class UserController {
         return service.findAll(); // list로 return
     }
 
-//    @GetMapping("/users/{id}")
-//    public EntityModel<User> retrieveUser(@PathVariable int id){ // url의 데이터값을 뽑아와야 함 -> @PathVariable
-//        User user = service.findOne(id);
-//
-//        if(user == null){
-//            throw new UserNotFoundException(String.format("ID[%s] not found", id));
-//        }
-//
-//        return EntityModel.of(user,
-//                linkTo(methodOn(UserController.class).retrieveAllUsers()).withRel("all-users")); // 전체 목록을 볼 수 있는 url의 정보를, 메서드로 전달
-//    }
+    @GetMapping("/users/{id}")
+    public EntityModel<User> retrieveUser(@PathVariable int id){ // url의 데이터값을 뽑아와야 함 -> @PathVariable
+        User user = service.findOne(id);
+
+        if(user == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        return EntityModel.of(user,
+                linkTo(methodOn(UserController.class).retrieveAllUsers()).withRel("all-users")); // 전체 목록을 볼 수 있는 url의 정보를, 메서드로 전달
+    }
 
     @PostMapping("/users")
     public ResponseEntity createUser(@Valid @RequestBody User user){ //JSON 데이터를 @RequestBody를 이용하여 Java - User 객체로 전환하여 받아옴
