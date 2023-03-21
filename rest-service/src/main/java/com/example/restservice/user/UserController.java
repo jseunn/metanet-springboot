@@ -25,7 +25,12 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public User retireveUser(@PathVariable int id){ // url의 데이터값을 뽑아와야 함 -> @PathVariable
-        return service.findOne(id);
+        User user = service.findOne(id);
+
+        if(user == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+        return user;
     }
 
     @PostMapping("/users")
