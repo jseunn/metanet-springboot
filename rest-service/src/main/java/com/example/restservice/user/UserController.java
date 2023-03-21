@@ -2,6 +2,7 @@ package com.example.restservice.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,4 +22,8 @@ public class UserController {
         return service.findAll(); // list로 return
     }
 
+    @GetMapping("/users/{id}")
+    public User retireveUser(@PathVariable int id){ // url의 데이터값을 뽑아와야 함 -> @PathVariable
+        return service.findOne(id);
+    }
 }
