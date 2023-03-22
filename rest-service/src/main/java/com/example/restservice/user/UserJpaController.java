@@ -51,4 +51,17 @@ public class UserJpaController {
 
         return ResponseEntity.created(location).build(); // 201 OK (URI location도 같이 전달)
     }
+
+    @GetMapping("/users/{id}/posts")
+    public List<Post> retrieveAllPostByUser(@PathVariable int id){
+        Optional<User> user = userRepository.findById(id);
+
+        if(!user.isPresent()){ // Optional 객체일 때는 null 이 아니라 isPresent
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        // 지연방식 -> 이 때 비로소 데이터를 가져오게 된다.
+        return user.get().getPosts(); //user가 갖고 있는 post들
+
+    }
 }
