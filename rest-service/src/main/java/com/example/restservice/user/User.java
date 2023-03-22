@@ -20,10 +20,10 @@ import java.util.List;
 @NoArgsConstructor
 //@JsonIgnoreProperties(value={"password", "ssn"})
 //@JsonFilter("UserInfo")
-@Entity
+//@Entity
 public class User {
-    @Id
-    @GeneratedValue
+//    @Id
+//    @GeneratedValue
     private Integer Id;
 
     @Size(min=2, message="Name은 두글자 이상 입력")
@@ -34,7 +34,7 @@ public class User {
     private String password;
     private String ssn;
 
-    @OneToMany(mappedBy = "user") //Post에서의 User 변수명
+//    @OneToMany(mappedBy = "user") //Post에서의 User 변수명
     private List<Post> posts; // 1:N 관계에서 데이터 가져오기
 
     // 에러 -> List<Post> posts 변수가 추가되어 @AllArgsConstructor 사용했을 때

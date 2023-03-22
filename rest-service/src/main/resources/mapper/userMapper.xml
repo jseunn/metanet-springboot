@@ -5,6 +5,9 @@
 
 <mapper namespace="com.example.restservice.user.UserMapper">
 
+    <select id="findAllUsers" resultType="User">
+        select * from users
+    </select>
     
 </mapper>
 
