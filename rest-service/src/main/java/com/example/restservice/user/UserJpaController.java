@@ -33,4 +33,8 @@ public class UserJpaController {
                 linkTo(methodOn(UserController.class).retrieveAllUsers()).withRel("all-users"));
     }
 
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id){
+        userRepository.deleteById(id);
+    }
 }
