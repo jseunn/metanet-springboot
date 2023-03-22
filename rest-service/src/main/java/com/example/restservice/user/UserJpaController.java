@@ -1,5 +1,6 @@
 package com.example.restservice.user;
 
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +21,10 @@ public class UserJpaController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
     @GetMapping("/users")
     public List<User> retrieveAllUsers(){
         return userRepository.findAll();
@@ -62,6 +68,25 @@ public class UserJpaController {
 
         // 지연방식 -> 이 때 비로소 데이터를 가져오게 된다.
         return user.get().getPosts(); //user가 갖고 있는 post들
+
+    }
+
+    @PostMapping("/users/{id}/posts")
+    public ResponseEntity<Post> createPost(@PathVariable int id, @RequestBody Post post){
+        Optional<User> user = userRepository.findById(id);
+
+        if(!user.isPresent()){ // Optional 객체일 때는 null 이 아니라 isPresent
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        post.setUser(user.get());
+        Post savePost = postRepository.save(post);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(savePost.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build(); // 201 OK (URI location도 같이 전달)
 
     }
 }
