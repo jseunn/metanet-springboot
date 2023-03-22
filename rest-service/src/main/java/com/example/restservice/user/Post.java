@@ -21,6 +21,7 @@ public class Post {
 
 //    @ManyToOne(fetch = FetchType.LAZY) // Post 입장에서는 N:1, User 입장에서는 1:N
 //    @JsonIgnore
-    private User user; // 필요한 시점에 user를 가져올 것이다.
+//    private User user; // 필요한 시점에 user를 가져올 것이다. JPA에서 사용한 것임
+    private int user_id;
 
 }

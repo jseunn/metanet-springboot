@@ -29,36 +29,37 @@ public class UserController {
         return service.findAll(); // list로 return
     }
 
-//    @GetMapping("/users/{id}")
-//    public EntityModel<User> retrieveUser(@PathVariable int id){ // url의 데이터값을 뽑아와야 함 -> @PathVariable
-//        User user = service.findOne(id);
-//
-//        if(user == null){
-//            throw new UserNotFoundException(String.format("ID[%s] not found", id));
-//        }
-//
-//        return EntityModel.of(user,
-//                linkTo(methodOn(UserController.class).retrieveAllUsers()).withRel("all-users")); // 전체 목록을 볼 수 있는 url의 정보를, 메서드로 전달
-//    }
-//
-//    @PostMapping("/users")
-//    public ResponseEntity createUser(@Valid @RequestBody User user){ //JSON 데이터를 @RequestBody를 이용하여 Java - User 객체로 전환하여 받아옴
-//        User savedUser = service.save(user);
-//
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-//                        .path("/{id}")
-//                        .buildAndExpand(savedUser.getId())
-//                                .toUri(); // 추가한 user의 URI를 만든다.
-//
-//        return ResponseEntity.created(location).build();
-//    }
-//
-//    @DeleteMapping("/users/{id}")
-//    public void deleteUser(@PathVariable int id){
-//        User user = service.deleteById(id);
-//
-//        if(user == null){
-//            throw new UserNotFoundException(String.format("ID[%s] not found", id));
-//        }
-//    }
+    @GetMapping("/users/{id}")
+    public EntityModel<User> retrieveUser(@PathVariable int id){ // url의 데이터값을 뽑아와야 함 -> @PathVariable
+        User user = service.findOne(id);
+
+        if(user == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+
+        return EntityModel.of(user,
+                linkTo(methodOn(UserController.class).retrieveAllUsers()).withRel("all-users")); // 전체 목록을 볼 수 있는 url의 정보를, 메서드로 전달
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity createUser(@Valid @RequestBody User user){ //JSON 데이터를 @RequestBody를 이용하여 Java - User 객체로 전환하여 받아옴
+        service.save(user);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(user.getId())
+                                .toUri(); // 추가한 user의 URI를 만든다.
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable int id){
+        User user = service.findOne(id);
+
+        if(user == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+        service.deleteById(id);
+    }
 }

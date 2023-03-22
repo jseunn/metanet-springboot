@@ -28,36 +28,19 @@ public class UserService {
         return userMapper.findAllUsers();
     }
 
-//    public User findOne(int id){
-//        for(User user : users){
-//            if(user.getId() == id){
-//                return user;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    public User save(User user){
-//        if(user.getId() == null){
-//            user.setId(++usersCount);
-//        }
-//
-//       users.add(user);
-//
-//       return user;
-//    }
-//
-//    public User deleteById(int id) {
-//        Iterator<User> iterator = users.iterator();
-//
-//        while (iterator.hasNext()) {
-//            User user = iterator.next();
-//
-//            if (user.getId() == id) {
-//                iterator.remove();
-//                return user;
-//            }
-//        }
-//        return null;
-//    }
+    public User findOne(int id) {
+        return userMapper.findUser(id);
+    }
+
+    public void save(User user){
+        userMapper.createUser(user);
+    }
+
+    public void deleteById(int id) {
+        userMapper.deleteUser(id);
+    }
+
+    public List<Post> findOneWithPosts(int id){
+        return userMapper.findUsersWithPosts(id);
+    }
 }

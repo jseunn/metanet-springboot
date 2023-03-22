@@ -5,10 +5,45 @@
 
 <mapper namespace="com.example.restservice.user.UserMapper">
 
+    <resultMap id="findPosts" type="com.example.restservice.user.Post">
+        <result column="id" property="id"/>
+        <result column="description" property="description"/>
+        <result column="user_id" property="user_id"/>
+    </resultMap>
+
+    <resultMap id="findUserPost" type="com.example.restservice.user.User">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="joindate" property="joindate"/>
+        <result column="password" property="password"/>
+        <result column="ssn" property="ssn"/>
+        <collection property="postlist" resultMap="findPosts"/>
+    </resultMap>
+
+<!--    <resultMap id="postList" type="com.example.restservice.user.Post">-->
+<!--        <result property=""-->
+<!--    </resultMap>-->
+
     <select id="findAllUsers" resultType="User">
         select * from users
     </select>
-    
+
+    <select id="findUser" resultType="User">
+        select * from users where id = #{id}
+    </select>
+
+    <insert id="createUser">
+        insert into users values(users_seq.nextval, #{name}, sysdate, #{password}, #{ssn})
+    </insert>
+
+    <delete id="deleteUser">
+        delete from users where id = #{id}
+    </delete>
+
+    <select id="findUsersWithPosts" resultMap="findPosts">
+        select postlist from users where id = #{id}
+    </select>
+
 </mapper>
 
 

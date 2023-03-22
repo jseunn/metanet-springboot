@@ -9,4 +9,8 @@ public interface UserMapper {
     public List<User> findAllUsers();
     public User findUser(int id);
     public void createUser(User user);
+    public void deleteUser(int id);
+
+
+    public List<Post> findUsersWithPosts(int id);
 }
