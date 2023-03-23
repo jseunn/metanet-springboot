@@ -7,9 +7,13 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MatchingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Service
@@ -20,6 +24,19 @@ public class UserServiceImpl implements  UserService{
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    // 실질적인 인증과 관련된 내용
+    // UserService가 UserDetailsService를 extends 하여 갖게 된 메서드
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(username);
+
+        if(userEntity == null){
+            throw new UsernameNotFoundException(username + " not found");
+        }
+
+        return new User(userEntity.getEmail(), userEntity.getEncrypedPwd(),
+                true, true, true, true, new ArrayList<>());
+    }
 
     @Override
     public UserDto createUser(UserDto userDto) {
